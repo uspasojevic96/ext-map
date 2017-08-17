@@ -1,2 +1,2 @@
 // @tag full-page
-// @require C:\wamp\www\apps\map\app.js
+// @require /Users/uros/workspace/git/ext-map/app.js

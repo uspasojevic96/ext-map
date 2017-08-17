@@ -33,17 +33,33 @@ Ext.define('Map.view.map.Map', {
         }
     ],
     addMarker: function (marker) {
-        var me = this;
+        var me = this;/*
         marker = Ext.apply({
             map: this.gmap
         }, marker);
+        */
         if (!marker.position) {
             marker.position = new google.maps.LatLng(marker.lat, marker.lng);
         }
         var m = new google.maps.Marker(marker);
+        m.setMap(this.gmap);
+        console.log(m);
         google.maps.event.addListener(m, "click", function () {
             me.fireEvent('markerClick', m); // This fires and event that can be listened to in controllers
         });
+
+        console.log(me.cache);
         return m;
+    },
+
+    /*listeners: {
+        render: function(c){
+            console.log(Ext.getCmp('gmap-body'));
+            google.maps.event.addListener(this.gmap, "click", function(e) {
+                this.fireEvent('click', e);
+                console.log(e);
+            });
+		}
     }
+    */
 });

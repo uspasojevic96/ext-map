@@ -9,6 +9,7 @@ Ext.define('Map.view.map.MapController', {
         'Ext.ux.IFrame',
         'Ext.window.Window'
     ],
+
     config: {
         listen: {
             // The fireEvent() is coming from a component so we listen on the component event domain
@@ -56,6 +57,36 @@ Ext.define('Map.view.map.MapController', {
                                 }
                             ]
                         }).show()
+                    },
+
+                    click: function(evt) {
+                        console.log(evt);
+                        var map = this.getView(),
+                        marker = {
+                            lat: evt.latLng.lat(),
+                            lng: evt.latLng.lng(),
+                            title: "Marrakesh",
+                            url: 'https://en.wikipedia.org/wiki/Marrakesh',
+                            animation: google.maps.Animation.DROP
+                        };
+
+                        var i = this.markers.length;
+                        console.log(i);
+                        if(i>0){
+                        while(i) {
+                            i--;
+
+                            console.log(this.markers[i]);
+
+                            this.markers[i].setMap(null);
+
+                            console.log(this.markers[i]);
+                        }
+                        }
+                        var d = map.addMarker(marker);
+                        console.log(d);
+                        this.markers.push(d);
+                        //console.log(this.getView().markers);
                     }
                 }
             }
@@ -70,28 +101,30 @@ Ext.define('Map.view.map.MapController', {
             store = map.getViewModel().getStore('Markers'), // Get the store from the ViewModel
             markers = [], // Create and empty markers array
             data;
+
+            me.markers = [];
         // Load the store
+        /*
         store.load(function (records) {
             // Iterate through each record
             Ext.each(records, function (record) {
                 data = record.getData(); // Get the data object from each record
-                markers.push(data); // Push the objects onto the markers array
+                me.markers.push(data); // Push the objects onto the markers array
             });
         });
-        map.markers = markers;  // Set the markers config for the Map component to the markers array
-    },
-    /*
-    * Method to add a new marker.  This could come from a form and could also use the geocode function
-    * */
-    addNewMarker: function (btn) {
-        var map = btn.up('map'),
-            marker = {
-                lat: 31.633725,
-                lng: -7.993092,
-                title: "Marrakesh",
-                url: 'https://en.wikipedia.org/wiki/Marrakesh',
-                animation: google.maps.Animation.DROP
-            };
-        map.addMarker(marker)
+        */
+        //map.markers = me.markers;  // Set the markers config for the Map component to the markers array
+        setTimeout(function() {
+            google.maps.event.addListener(map.gmap, 'click', function(e) {
+            map.fireEvent('click', e);
+        });
+
+            console.log(map.gmap);
+        }, 5000);
+        
+},
+
+    doSomething: function() {
+        console.log('asdasd');
     }
 });
